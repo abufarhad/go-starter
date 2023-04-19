@@ -1,29 +1,35 @@
-# Golang Backend Boilerplate
+# Golang Backend Starter
 
-# Run Migration 
-```go
-go run main.go migrate
-```
 
-# Run Locally
+## Run Locally
 Install dependencies
 
 ```go
 go mod vendor
 ```
 
-### Start the server Locally
+### Run Migration
+```go
+go run main.go migrate
+```
 
+### Start the server Locally
 ```go
 go run main.go serve
 ```
 
-# Start the server using Docker
+
+## Start the server by Docker
 
 ```makefile
 make development
 ```
-# Stop the server using Docker
+or
+```shell
+bash run.sh
+```
+
+## Stop the server by Docker
 
 ```makefile
 make clean
