@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/monstar-lab-bd/golang-starter-rest-api/internal/logger"
-	systemCtr "github.com/monstar-lab-bd/golang-starter-rest-api/system/controller"
-	systemRepo "github.com/monstar-lab-bd/golang-starter-rest-api/system/repository"
-	systemUseCase "github.com/monstar-lab-bd/golang-starter-rest-api/system/service"
+	systemCtr "github.com/monstar-lab-bd/golang-starter-rest-api/system_check/controller"
+	systemRepo "github.com/monstar-lab-bd/golang-starter-rest-api/system_check/repository"
+	systemUseCase "github.com/monstar-lab-bd/golang-starter-rest-api/system_check/service"
 	"log"
 	"net/http"
 	"os"
@@ -22,7 +22,7 @@ import (
 
 var serveCmd = &cobra.Command{
 	Use:   "serve",
-	Short: "serve will serve the system apis",
+	Short: "serve will serve the system_check apis",
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 		if err := conn.ConnectDb(config.Db()); err != nil {
 			log.Println(err)
@@ -58,7 +58,7 @@ var serveCmd = &cobra.Command{
 func ApisToServe(g *gin.Engine) {
 	grp := g.Group("api")
 
-	//system pkg
+	//system_check pkg
 	sysRepo := systemRepo.NewSystemRepository(conn.Db())
 	sysUC := systemUseCase.NewSystemService(sysRepo)
 	systemCtr.NewSystemController(grp, sysUC)
