@@ -1,0 +1,57 @@
+version: "3.8"
+
+services:
+  consul:
+    image: consul:latest
+    container_name: go_consul
+    restart: always
+    ports:
+      - 8500:8500
+    networks:
+      - go_network
+
+  db:
+    container_name: go_mysql
+    build:
+      context: .
+      dockerfile: Dockerfile.db
+    ports:
+      - 3306:3306
+    volumes:
+      - go_data:/var/lib/mysql:rw
+    environment:
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=12345678
+      - MYSQL_DATABASE=demo_database
+      - MYSQL_ROOT_PASSWORD=12345678
+    tty: true
+    networks:
+      - go_network
+
+  go_starter:
+    container_name: go_starter
+    build:
+      context: .
+    ports:
+      - 8080:8080
+    command: serve
+    environment:
+      - CONSUL_URL=go_consul:8500
+      - CONSUL_PATH=go_starter
+    tty: true
+    depends_on:
+      - consul
+      - db
+    networks:
+      - go_network
+    restart: on-failure:3
+
+
+networks:
+  go_network:
+    name: go_network
+    driver: bridge
+
+volumes:
+  go_data:
+    name: go_data
