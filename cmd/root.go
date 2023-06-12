@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/monstar-lab-bd/golang-starter-rest-api/internal/config"
 	"github.com/monstar-lab-bd/golang-starter-rest-api/internal/logger"
 	"os"
 
@@ -17,7 +16,6 @@ var rootCmd = &cobra.Command{
 }
 
 func Execute() {
-	config.LoadConfig()
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)

@@ -2,7 +2,9 @@ package methodutil
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/golang-jwt/jwt"
+	"github.com/joho/godotenv"
 	"github.com/monstar-lab-bd/golang-starter-rest-api/internal/errors"
 	"github.com/monstar-lab-bd/golang-starter-rest-api/internal/logger"
 	"math/rand"
@@ -11,6 +13,13 @@ import (
 	"strings"
 	"time"
 )
+
+func LoadEnv() {
+	envErr := godotenv.Load()
+	if envErr != nil {
+		fmt.Println("Error loading .env file", envErr)
+	}
+}
 
 func IsEmpty(x interface{}) bool {
 	return x == nil || reflect.DeepEqual(x, reflect.Zero(reflect.TypeOf(x)).Interface())

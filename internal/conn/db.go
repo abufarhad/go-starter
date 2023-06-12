@@ -3,45 +3,49 @@ package conn
 import (
 	"fmt"
 	_ "github.com/lib/pq"
-	"github.com/monstar-lab-bd/golang-starter-rest-api/internal/config"
 	"github.com/monstar-lab-bd/golang-starter-rest-api/internal/logger"
+	"github.com/monstar-lab-bd/golang-starter-rest-api/internal/utils/methodutil"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	gormlogger "gorm.io/gorm/logger"
+	"os"
+	"time"
 )
 
 var db *gorm.DB
 
-func getDsn(dbCfg *config.DbConfig) string {
+func getDsn() string {
 	var dsn = fmt.Sprintf("port=%s host=%s user=%s password=%s dbname=%s sslmode=disable",
-		dbCfg.Port,
-		dbCfg.Host,
-		dbCfg.User,
-		dbCfg.Pass,
+		os.Getenv("DB_PORT"),
+		os.Getenv("DB_HOST"),
+		os.Getenv("DB_USERNAME"),
+		os.Getenv("DB_PASSWORD"),
 	)
 	logger.Info(dsn)
 	return dsn
 }
 
-func ConnectDb(dbCfg *config.DbConfig) error {
+func ConnectDb() error {
 
-	logger.Info("connecting to mysql at " + dbCfg.Host + ":" + dbCfg.Port + "...")
+	methodutil.LoadEnv()
+	logger.Info("connecting to mysql at " + os.Getenv("DB_HOST") + ":" + os.Getenv("DB_PORT") + "...")
 	logMode := gormlogger.Info
 
-	//dB, err := gorm.Open(postgres.Open(getDsn(dbCfg)), &gorm.Config{
+	//dB, err := gorm.Open(postgres.Open(getDsn()), &gorm.Config{
 	//	PrepareStmt: true,
 	//	Logger:      gormlogger.Default.LogMode(logMode),
 	//})
 
 	//Mysql connection
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", dbCfg.User, dbCfg.Pass, dbCfg.Host, dbCfg.Port, dbCfg.Schema)
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", os.Getenv("DB_USERNAME"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_NAME"))
+	fmt.Println("dsn = ", dsn)
 	dB, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		PrepareStmt: true,
 		Logger:      gormlogger.Default.LogMode(logMode),
 	})
 
 	if err != nil {
-		logger.Error("postgres connection error ", err)
+		logger.Error("mysql connection error ", err)
 		return err
 	}
 
@@ -57,7 +61,7 @@ func ConnectDb(dbCfg *config.DbConfig) error {
 	sqlDb.SetMaxOpenConns(100)
 
 	// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
-	sqlDb.SetConnMaxLifetime(dbCfg.MaxConnLifetime)
+	sqlDb.SetConnMaxLifetime(time.Hour)
 
 	db = dB
 
