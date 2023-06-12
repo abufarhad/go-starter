@@ -35,3 +35,12 @@ bash run.sh
 make clean
 ```
 
+
+## Version
+`v2.0.0 => env`   
+`v1.0.0 => consul`
+
+### checkout process
+ ```bash
+git checkout v1.0.0
+```
