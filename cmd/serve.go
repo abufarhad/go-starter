@@ -16,7 +16,6 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/monstar-lab-bd/golang-starter-rest-api/internal/config"
 	"github.com/monstar-lab-bd/golang-starter-rest-api/internal/conn"
 )
 
@@ -24,7 +23,7 @@ var serveCmd = &cobra.Command{
 	Use:   "serve",
 	Short: "serve will serve the system_check apis",
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
-		if err := conn.ConnectDb(config.Db()); err != nil {
+		if err := conn.ConnectDb(); err != nil {
 			log.Println(err)
 			return err
 		}
@@ -32,12 +31,11 @@ var serveCmd = &cobra.Command{
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		g := gin.Default()
-		appCfg := config.App()
 
 		ApisToServe(g)
 
 		server := &http.Server{
-			Addr:    ":" + appCfg.Port,
+			Addr:    ":" + os.Getenv("APP_PORT"),
 			Handler: g,
 		}
 		/// start http server
@@ -47,7 +45,7 @@ var serveCmd = &cobra.Command{
 				log.Printf("listen: %s\n", err)
 			}
 		}()
-		fmt.Println("server listening on port : ", appCfg.Port)
+		fmt.Println("server listening on port : ", os.Getenv("APP_PORT"))
 
 		// graceful shutdown
 		GracefulShutdown(server)

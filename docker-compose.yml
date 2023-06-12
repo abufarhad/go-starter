@@ -1,15 +1,6 @@
 version: "3.8"
 
 services:
-  consul:
-    image: consul:latest
-    container_name: go_consul
-    restart: always
-    ports:
-      - 8500:8500
-    networks:
-      - go_network
-
   db:
     container_name: go_mysql
     build:
@@ -36,11 +27,15 @@ services:
       - 8080:8080
     command: serve
     environment:
-      - CONSUL_URL=go_consul:8500
-      - CONSUL_PATH=go_starter
+      - APP_NAME=go-starter
+      - APP_PORT=8080
+      - DB_HOST=localhost
+      - DB_PORT=3306
+      - DB_USERNAME=root
+      - DB_PASSWORD=12345678
+      - DB_NAME=demo_databse
     tty: true
     depends_on:
-      - consul
       - db
     networks:
       - go_network
