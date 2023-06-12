@@ -29,11 +29,11 @@ services:
     environment:
       - APP_NAME=go-starter
       - APP_PORT=8080
-      - DB_HOST=localhost
+      - DB_HOST=db
       - DB_PORT=3306
       - DB_USERNAME=root
       - DB_PASSWORD=12345678
-      - DB_NAME=demo_databse
+      - DB_NAME=demo_database
     tty: true
     depends_on:
       - db
