@@ -3,41 +3,42 @@ package conn
 import (
 	"fmt"
 	_ "github.com/lib/pq"
+	"github.com/monstar-lab-bd/golang-starter-rest-api/internal/config"
 	"github.com/monstar-lab-bd/golang-starter-rest-api/internal/logger"
 	"github.com/monstar-lab-bd/golang-starter-rest-api/internal/utils/methodutil"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	gormlogger "gorm.io/gorm/logger"
-	"os"
 	"time"
 )
 
 var db *gorm.DB
 
-func getDsn() string {
+// this func is for postgres only
+func getDsn(dbCfg *config.DbCfg) string {
 	var dsn = fmt.Sprintf("port=%s host=%s user=%s password=%s dbname=%s sslmode=disable",
-		os.Getenv("DB_PORT"),
-		os.Getenv("DB_HOST"),
-		os.Getenv("DB_USERNAME"),
-		os.Getenv("DB_PASSWORD"),
+		dbCfg.Port,
+		dbCfg.Host,
+		dbCfg.User,
+		dbCfg.Pass,
+		dbCfg.Schema,
 	)
 	logger.Info(dsn)
 	return dsn
 }
 
-func ConnectDb() error {
-
+func ConnectDb(dbCfg *config.DbCfg) error {
 	methodutil.LoadEnv()
-	logger.Info("connecting to mysql at " + os.Getenv("DB_HOST") + ":" + os.Getenv("DB_PORT") + "...")
+	logger.Info("connecting to mysql at " + dbCfg.Host + ":" + dbCfg.Port + "...")
 	logMode := gormlogger.Info
 
-	//dB, err := gorm.Open(postgres.Open(getDsn()), &gorm.Config{
+	//dB, err := gorm.Open(postgres.Open(getDsn(dbCfg)), &gorm.Config{
 	//	PrepareStmt: true,
 	//	Logger:      gormlogger.Default.LogMode(logMode),
 	//})
 
 	//Mysql connection
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", os.Getenv("DB_USERNAME"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_NAME"))
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", dbCfg.User, dbCfg.Pass, dbCfg.Host, dbCfg.Port, dbCfg.Schema)
 	fmt.Println("dsn = ", dsn)
 	dB, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		PrepareStmt: true,

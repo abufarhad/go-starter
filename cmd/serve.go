@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/monstar-lab-bd/golang-starter-rest-api/internal/config"
 	"github.com/monstar-lab-bd/golang-starter-rest-api/internal/logger"
 	systemCtr "github.com/monstar-lab-bd/golang-starter-rest-api/system_check/controller"
 	systemRepo "github.com/monstar-lab-bd/golang-starter-rest-api/system_check/repository"
@@ -23,7 +24,7 @@ var serveCmd = &cobra.Command{
 	Use:   "serve",
 	Short: "serve will serve the system_check apis",
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
-		if err := conn.ConnectDb(); err != nil {
+		if err := conn.ConnectDb(config.Db()); err != nil {
 			log.Println(err)
 			return err
 		}
@@ -31,11 +32,11 @@ var serveCmd = &cobra.Command{
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		g := gin.Default()
-
+		appCfg := config.App()
 		ApisToServe(g)
 
 		server := &http.Server{
-			Addr:    ":" + os.Getenv("APP_PORT"),
+			Addr:    ":" + appCfg.Port,
 			Handler: g,
 		}
 		/// start http server
@@ -45,7 +46,7 @@ var serveCmd = &cobra.Command{
 				log.Printf("listen: %s\n", err)
 			}
 		}()
-		fmt.Println("server listening on port : ", os.Getenv("APP_PORT"))
+		fmt.Println("server listening on port : ", appCfg.Port)
 
 		// graceful shutdown
 		GracefulShutdown(server)
