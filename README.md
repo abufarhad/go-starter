@@ -1,3 +1,19 @@
+Welcome to My Clean Architecture Boilerplate! 🚀
+
+The goal is to provide you with a solid and scalable foundation for developing applications that adhere to the principles of clean architecture. With a focus on modularity, flexibility, and maintainability, our boilerplate includes essential features like Dependency Injection, Database Integration, Logging, and Error Handling.
+
+Key Features:
+
+- Clean Architecture Principles
+- Modularity and Scalability
+- Dependency Injection
+- Database Integration
+- Logging
+- Error Handling
+
+Join this exciting journey of building robust and high-quality software solutions. Let's create innovative applications that make a difference in the world! 🌟
+
+
 # Golang Backend Starter
 
 
