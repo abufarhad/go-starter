@@ -1,4 +1,5 @@
 #### When anyone is going to create a new module, follow these steps:
+Let's consider we are going to create "user" module
 
 1. Create a folder in the root directory named as - user (you can rename it to whatever suits best).
 2. Inside the user folder, create three new folders - controller, service, and repository.
