@@ -5,19 +5,21 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/monstar-lab-bd/golang-starter-rest-api/internal/config"
+	"github.com/monstar-lab-bd/golang-starter-rest-api/internal/conn"
 	"github.com/monstar-lab-bd/golang-starter-rest-api/internal/logger"
 	systemCtr "github.com/monstar-lab-bd/golang-starter-rest-api/system_check/controller"
 	systemRepo "github.com/monstar-lab-bd/golang-starter-rest-api/system_check/repository"
 	systemUseCase "github.com/monstar-lab-bd/golang-starter-rest-api/system_check/service"
+
+	userCtr "github.com/monstar-lab-bd/golang-starter-rest-api/user/controller"
+	userRepo "github.com/monstar-lab-bd/golang-starter-rest-api/user/repository"
+	userService "github.com/monstar-lab-bd/golang-starter-rest-api/user/service"
+	"github.com/spf13/cobra"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"time"
-
-	"github.com/spf13/cobra"
-
-	"github.com/monstar-lab-bd/golang-starter-rest-api/internal/conn"
 )
 
 var serveCmd = &cobra.Command{
@@ -61,6 +63,11 @@ func ApisToServe(g *gin.Engine) {
 	sysRepo := systemRepo.NewSystemRepository(conn.Db())
 	sysUC := systemUseCase.NewSystemService(sysRepo)
 	systemCtr.NewSystemController(grp, sysUC)
+
+	//user pkg
+	useRepo := userRepo.NewUserRepository(conn.Db())
+	userUC := userService.NewUserService(useRepo)
+	userCtr.NewUserController(grp, userUC)
 }
 
 func init() {

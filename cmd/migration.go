@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"github.com/monstar-lab-bd/golang-starter-rest-api/domain"
 	"github.com/monstar-lab-bd/golang-starter-rest-api/internal/config"
 	"log"
 
@@ -19,8 +20,13 @@ var migrationCmd = &cobra.Command{
 		return nil
 	},
 
-	Run: func(cmd *cobra.Command, args []string) {
-		//conn.GetDB().GormDB.AutoMigrate(domain.Product{})
+	RunE: func(cmd *cobra.Command, args []string) error {
+		if err := conn.Db().AutoMigrate(
+			domain.User{},
+		); err != nil {
+			return err
+		}
+		return nil
 	},
 }
 
