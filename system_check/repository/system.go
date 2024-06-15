@@ -1,7 +1,8 @@
 package repository
 
 import (
-	"github.com/monstar-lab-bd/golang-starter-rest-api/domain"
+	"github.com/abufarhad/golang-starter-rest-api/domain"
+	"github.com/abufarhad/golang-starter-rest-api/internal/errors"
 	"gorm.io/gorm"
 )
 
@@ -15,10 +16,10 @@ func NewSystemRepository(db *gorm.DB) domain.ISystemRepo {
 	}
 }
 
-func (sys *system) DBCheck() (bool, error) {
+func (sys *system) DBCheck() (bool, *errors.RestErr) {
 	dB, _ := sys.DB.DB()
 	if err := dB.Ping(); err != nil {
-		return false, err
+		return false, errors.NewInternalServerError(err)
 	}
 
 	return true, nil

@@ -1,11 +1,11 @@
 package cmd
 
 import (
-	"github.com/monstar-lab-bd/golang-starter-rest-api/domain"
-	"github.com/monstar-lab-bd/golang-starter-rest-api/internal/config"
+	"github.com/abufarhad/golang-starter-rest-api/domain"
+	"github.com/abufarhad/golang-starter-rest-api/internal/config"
 	"log"
 
-	"github.com/monstar-lab-bd/golang-starter-rest-api/internal/conn"
+	"github.com/abufarhad/golang-starter-rest-api/internal/conn"
 	"github.com/spf13/cobra"
 )
 
@@ -23,6 +23,9 @@ var migrationCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if err := conn.Db().AutoMigrate(
 			domain.User{},
+			domain.Club{},
+			domain.UserClub{},
+			domain.Post{},
 		); err != nil {
 			return err
 		}

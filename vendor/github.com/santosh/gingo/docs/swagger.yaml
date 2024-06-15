@@ -1,0 +1,114 @@
+basePath: /api/v1
+definitions:
+  models.Book:
+    properties:
+      author:
+        type: string
+      isbn:
+        type: string
+      title:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: sntshkmr60@gmail.com
+    name: Santosh Kumar
+    url: https://twitter.com/sntshk
+  description: A book management service API in Go using Gin framework.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://tos.santoshk.dev
+  title: Gin Book Service
+  version: "1.0"
+paths:
+  /books:
+    get:
+      description: Responds with the list of all books as JSON.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Book'
+            type: array
+      summary: Get books array
+      tags:
+      - books
+    post:
+      description: Takes a book JSON and store in DB. Return saved JSON.
+      parameters:
+      - description: Book JSON
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/models.Book'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Book'
+      summary: Store a new book
+      tags:
+      - books
+  /books/{isbn}:
+    delete:
+      description: Delete a single entry from the database based on isbn.
+      parameters:
+      - description: delete book by isbn
+        in: path
+        name: isbn
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: ""
+      summary: Remove single book by isbn
+      tags:
+      - books
+    get:
+      description: Returns the book whose ISBN value matches the isbn.
+      parameters:
+      - description: search book by isbn
+        in: path
+        name: isbn
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Book'
+      summary: Get single book by isbn
+      tags:
+      - books
+    put:
+      description: Updates and returns a single book whose ISBN value matches the
+        isbn. New data must be passed in the body.
+      parameters:
+      - description: update book by isbn
+        in: path
+        name: isbn
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Book'
+      summary: Update single book by isbn
+      tags:
+      - books
+swagger: "2.0"

@@ -1,0 +1,238 @@
+definitions:
+  domain.User:
+    properties:
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      password:
+        type: string
+      role:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  dto.LoginReq:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  dto.LoginResp:
+    properties:
+      access_token:
+        type: string
+      refresh_token:
+        type: string
+    type: object
+  dto.TokenRefreshReq:
+    properties:
+      refresh_token:
+        type: string
+    type: object
+  dto.UpdateUserReq:
+    properties:
+      name:
+        type: string
+    type: object
+  dto.UserReq:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  dto.UserResp:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  errors.RestErr:
+    properties:
+      detail:
+        type: string
+      message:
+        type: string
+      status:
+        type: integer
+    type: object
+  msgutil.RestResp:
+    properties:
+      data: {}
+      message:
+        type: string
+    type: object
+info:
+  contact: {}
+  title: Online Book Club API
+paths:
+  /api/v1:
+    get:
+      consumes:
+      - application/json
+      description: Root
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/msgutil.RestResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errors.RestErr'
+      summary: Root
+      tags:
+      - system
+  /api/v1/h34l7h:
+    get:
+      consumes:
+      - application/json
+      description: Health
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/msgutil.RestResp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errors.RestErr'
+      summary: Health
+      tags:
+      - system
+  /api/v1/login:
+    post:
+      consumes:
+      - application/json
+      description: Login
+      parameters:
+      - description: User
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoginReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.LoginResp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errors.RestErr'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errors.RestErr'
+      summary: Login
+      tags:
+      - auth
+  /api/v1/token/refresh:
+    post:
+      consumes:
+      - application/json
+      description: Refresh token
+      parameters:
+      - description: User
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/dto.TokenRefreshReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.LoginResp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errors.RestErr'
+      summary: Refresh token
+      tags:
+      - auth
+  /api/v1/users/signup:
+    post:
+      consumes:
+      - application/json
+      description: Create user
+      parameters:
+      - description: User
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UserReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.UserResp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errors.RestErr'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errors.RestErr'
+      summary: Create user
+      tags:
+      - user
+  /api/v1/users/update:
+    patch:
+      consumes:
+      - application/json
+      description: Update user
+      parameters:
+      - description: User
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateUserReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/domain.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/errors.RestErr'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/errors.RestErr'
+      summary: Update user
+      tags:
+      - user
+swagger: "2.0"

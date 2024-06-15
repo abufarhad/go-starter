@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/monstar-lab-bd/golang-starter-rest-api/internal/config"
-	"github.com/monstar-lab-bd/golang-starter-rest-api/internal/logger"
+	"github.com/abufarhad/golang-starter-rest-api/internal/config"
+	"github.com/abufarhad/golang-starter-rest-api/internal/logger"
 	"os"
 
 	"github.com/spf13/cobra"

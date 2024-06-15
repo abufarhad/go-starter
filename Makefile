@@ -1,4 +1,4 @@
-PROJECT_NAME := go_starter
+PROJECT_NAME := online_book_club
 PKG_LIST := $(shell go list ${PROJECT_NAME}/tests/testing/... | grep -v /vendor/)
 
 
@@ -30,3 +30,6 @@ clean: ## Remove previous build
 	@rm -f $(PROJECT_NAME)
 	@docker-compose down
 
+run: ## Run application
+	@swag init
+	@go run main.go serve

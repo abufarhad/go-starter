@@ -3,9 +3,9 @@ package conn
 import (
 	"fmt"
 	_ "github.com/lib/pq"
-	"github.com/monstar-lab-bd/golang-starter-rest-api/internal/config"
-	"github.com/monstar-lab-bd/golang-starter-rest-api/internal/logger"
-	"github.com/monstar-lab-bd/golang-starter-rest-api/internal/utils/methodutil"
+	"github.com/abufarhad/golang-starter-rest-api/internal/config"
+	"github.com/abufarhad/golang-starter-rest-api/internal/logger"
+	"github.com/abufarhad/golang-starter-rest-api/internal/utils/methodutil"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	gormlogger "gorm.io/gorm/logger"

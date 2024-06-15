@@ -2,20 +2,36 @@ package errors
 
 import (
 	"errors"
-	"github.com/monstar-lab-bd/golang-starter-rest-api/internal/logger"
+	"github.com/abufarhad/golang-starter-rest-api/internal/logger"
 	"net/http"
 )
 
 var (
+	ErrInvalidEmail            = NewError("invalid email")
+	ErrInvalidPassword         = NewError("invalid password")
+	ErrInvalidEmailOrPassword  = NewError("invalid email or password")
+	ErrCreateJwt               = NewError("failed to create JWT token")
+	ErrParseJwt                = NewError("failed to parse JWT token")
+	ErrInvalidRefreshToken     = NewError("invalid refresh_token")
+	ErrInvalidRefreshUuid      = NewError("invalid refresh_uuid")
+	ErrInvalidAccessToken      = NewError("invalid access_token")
+	ErrAccessTokenSign         = NewError("failed to sign access_token")
+	ErrRefreshTokenSign        = NewError("failed to sign refresh_token")
+	ErrNoContextUser           = NewError("failed to get auth from context")
+	ErrInvalidUserType         = NewError("invalid user type")
 	ErrInvalidJwtSigningMethod = NewError("invalid signing method while parsing jwt")
 	ErrSomethingWentWrong      = "Something went wrong"
+	ErrRecordNotFound          = "Record not found"
+	ErrBadRequest              = "Bad request"
+	ErrAlreadyExist            = "Record already exist"
+	ErrUnauthorizedError       = "Unauthorized error"
+	ErrRecordNotValid          = "invalid parameters, check email or password"
 )
 
 type RestErr struct {
-	Message     string `json:"message"`
-	ReferenceNo string `json:"reference_no"`
-	Detail      string `json:"detail"`
-	Status      int    `json:"status"`
+	Message string `json:"message"`
+	Detail  string `json:"detail"`
+	Status  int    `json:"status"`
 }
 
 func (err *RestErr) Error() string {
@@ -46,9 +62,9 @@ func NewInternalServerError(err error) *RestErr {
 	return restErr
 }
 
-func NewBadRequestError(message string, err error) *RestErr {
+func NewBadRequestError(err error) *RestErr {
 	restErr := &RestErr{
-		Message: message,
+		Message: ErrBadRequest,
 		Status:  http.StatusBadRequest,
 	}
 
@@ -62,9 +78,9 @@ func NewBadRequestError(message string, err error) *RestErr {
 	return restErr
 }
 
-func NewNotFoundError(message string, err error) *RestErr {
+func NewNotFoundError(err error) *RestErr {
 	restErr := &RestErr{
-		Message: message,
+		Message: ErrRecordNotFound,
 		Status:  http.StatusNotFound,
 	}
 
@@ -78,9 +94,9 @@ func NewNotFoundError(message string, err error) *RestErr {
 	return restErr
 }
 
-func NewAlreadyExistError(message string, err error) *RestErr {
+func NewAlreadyExistError(err error) *RestErr {
 	restErr := &RestErr{
-		Message: message,
+		Message: ErrAlreadyExist,
 		Status:  http.StatusConflict,
 	}
 
@@ -94,9 +110,9 @@ func NewAlreadyExistError(message string, err error) *RestErr {
 	return restErr
 }
 
-func NewUnauthorizedError(message string, err error) *RestErr {
+func NewUnauthorizedError(err error) *RestErr {
 	restErr := &RestErr{
-		Message: message,
+		Message: ErrUnauthorizedError,
 		Status:  http.StatusUnauthorized,
 	}
 
