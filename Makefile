@@ -1,4 +1,4 @@
-PROJECT_NAME := online_book_club
+PROJECT_NAME := go_starter
 PKG_LIST := $(shell go list ${PROJECT_NAME}/tests/testing/... | grep -v /vendor/)
 
 
