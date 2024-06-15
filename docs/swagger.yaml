@@ -79,7 +79,7 @@ definitions:
     type: object
 info:
   contact: {}
-  title: Online Book Club API
+  title: Go Starter API
 paths:
   /api/v1:
     get:

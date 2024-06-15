@@ -1,7 +1,7 @@
 {
     "swagger": "2.0",
     "info": {
-        "title": "Online Book Club API",
+        "title": "Go Starter API",
         "contact": {}
     },
     "paths": {
