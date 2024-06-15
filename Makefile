@@ -30,3 +30,6 @@ clean: ## Remove previous build
 	@rm -f $(PROJECT_NAME)
 	@docker-compose down
 
+run: ## Run application
+	@swag init
+	@go run main.go serve

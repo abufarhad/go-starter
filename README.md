@@ -51,6 +51,11 @@ bash run.sh
 make clean
 ```
 
+## Swagger Docs
+
+```go
+http://localhost:8080/api/v1/docs/index.html
+```
 
 ## Version
 `v2.0.0 => env`   

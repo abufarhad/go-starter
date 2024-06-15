@@ -21,6 +21,7 @@ WORKDIR /src
 # Import the code from the context.
 COPY ./ ./
 
+
 # Build the Go app (check this line)
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix 'static' -o /app .
 #RUN CGO_ENABLED=0 GOOS=arm64 go build -a -installsuffix cgo -ldflags '-extldflags "-static"' -o main.

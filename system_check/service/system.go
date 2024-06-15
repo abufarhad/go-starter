@@ -1,8 +1,9 @@
 package service
 
 import (
-	"github.com/monstar-lab-bd/golang-starter-rest-api/domain"
-	"github.com/monstar-lab-bd/golang-starter-rest-api/domain/dto"
+	"github.com/abufarhad/golang-starter-rest-api/domain"
+	"github.com/abufarhad/golang-starter-rest-api/domain/dto"
+	"github.com/abufarhad/golang-starter-rest-api/internal/errors"
 )
 
 type system struct {
@@ -15,7 +16,7 @@ func NewSystemService(sysRepo domain.ISystemRepo) domain.ISystemService {
 	}
 }
 
-func (sys *system) GetHealth() (*dto.HealthResp, error) {
+func (sys *system) GetHealth() (*dto.HealthResp, *errors.RestErr) {
 	resp := dto.HealthResp{}
 
 	// check db

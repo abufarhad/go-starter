@@ -3,23 +3,33 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"github.com/monstar-lab-bd/golang-starter-rest-api/internal/config"
-	"github.com/monstar-lab-bd/golang-starter-rest-api/internal/conn"
-	"github.com/monstar-lab-bd/golang-starter-rest-api/internal/logger"
-	systemCtr "github.com/monstar-lab-bd/golang-starter-rest-api/system_check/controller"
-	systemRepo "github.com/monstar-lab-bd/golang-starter-rest-api/system_check/repository"
-	systemUseCase "github.com/monstar-lab-bd/golang-starter-rest-api/system_check/service"
 
-	userCtr "github.com/monstar-lab-bd/golang-starter-rest-api/user/controller"
-	userRepo "github.com/monstar-lab-bd/golang-starter-rest-api/user/repository"
-	userService "github.com/monstar-lab-bd/golang-starter-rest-api/user/service"
-	"github.com/spf13/cobra"
+	"github.com/abufarhad/golang-starter-rest-api/auth/middlewares"
+	"github.com/abufarhad/golang-starter-rest-api/internal/config"
+	"github.com/abufarhad/golang-starter-rest-api/internal/conn"
+	"github.com/abufarhad/golang-starter-rest-api/internal/logger"
+	systemCtr "github.com/abufarhad/golang-starter-rest-api/system_check/controller"
+	systemRepo "github.com/abufarhad/golang-starter-rest-api/system_check/repository"
+	systemUseCase "github.com/abufarhad/golang-starter-rest-api/system_check/service"
+	"github.com/gin-gonic/gin"
+
+	userCtr "github.com/abufarhad/golang-starter-rest-api/user/controller"
+	userRepo "github.com/abufarhad/golang-starter-rest-api/user/repository"
+	userService "github.com/abufarhad/golang-starter-rest-api/user/service"
+
+	clubsCtr "github.com/abufarhad/golang-starter-rest-api/clubs/controller"
+	clubsRepo "github.com/abufarhad/golang-starter-rest-api/clubs/repository"
+	clubsService "github.com/abufarhad/golang-starter-rest-api/clubs/service"
+
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"time"
+
+	authCtr "github.com/abufarhad/golang-starter-rest-api/auth/controller"
+	authService "github.com/abufarhad/golang-starter-rest-api/auth/service"
+	"github.com/spf13/cobra"
 )
 
 var serveCmd = &cobra.Command{
@@ -34,6 +44,8 @@ var serveCmd = &cobra.Command{
 	},
 	RunE: func(cmd *cobra.Command, args []string) error {
 		g := gin.Default()
+		middlewares.Attach(g)
+
 		appCfg := config.App()
 		ApisToServe(g)
 
@@ -65,9 +77,18 @@ func ApisToServe(g *gin.Engine) {
 	systemCtr.NewSystemController(grp, sysUC)
 
 	//user pkg
-	useRepo := userRepo.NewUserRepository(conn.Db())
-	userUC := userService.NewUserService(useRepo)
-	userCtr.NewUserController(grp, userUC)
+	usrRepo := userRepo.NewUserRepository(conn.Db())
+	userSvc := userService.NewUserService(usrRepo)
+	userCtr.NewUserController(grp, userSvc)
+
+	//auth pkg
+	authSvc := authService.NewAuthService(usrRepo)
+	authCtr.NewAuthController(grp, authSvc)
+
+	//club pkg
+	clubRepo := clubsRepo.NewClubRepository(conn.Db())
+	clubsSvc := clubsService.NewClubService(clubRepo)
+	clubsCtr.NewClubController(grp, clubsSvc)
 }
 
 func init() {

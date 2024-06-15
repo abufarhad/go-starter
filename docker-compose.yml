@@ -8,12 +8,12 @@ services:
       dockerfile: Dockerfile.db
     ports:
       - 3306:3306
-    volumes:
-      - go_data:/var/lib/mysql:rw
+#    volumes:
+#      - go_data:/var/lib/mysql:rw
     environment:
       - MYSQL_USER=root
       - MYSQL_PASSWORD=12345678
-      - MYSQL_DATABASE=demo_database
+      - MYSQL_DATABASE=test_db
       - MYSQL_ROOT_PASSWORD=12345678
     tty: true
     networks:
@@ -27,13 +27,17 @@ services:
       - 8080:8080
     command: serve
     environment:
-      - APP_NAME=go-starter
       - APP_PORT=8080
       - DB_HOST=db
       - DB_PORT=3306
       - DB_USERNAME=root
       - DB_PASSWORD=12345678
-      - DB_NAME=demo_database
+      - DB_NAME=test_db
+      - ACCESS_TOKEN_SECRET=access_token_secret
+      - REFRESH_TOKEN_SECRET=refresh_token_secret
+      - ACCESS_TOKEN_EXPIRY=3000
+      - REFRESH_TOKEN_EXPIRY=10080
+      - CONTEXT_KEY=auth
     tty: true
     depends_on:
       - db

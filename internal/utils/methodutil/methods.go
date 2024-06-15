@@ -5,8 +5,9 @@ import (
 	"fmt"
 	"github.com/golang-jwt/jwt"
 	"github.com/joho/godotenv"
-	"github.com/monstar-lab-bd/golang-starter-rest-api/internal/errors"
-	"github.com/monstar-lab-bd/golang-starter-rest-api/internal/logger"
+	"github.com/abufarhad/golang-starter-rest-api/internal/errors"
+	"github.com/abufarhad/golang-starter-rest-api/internal/logger"
+	"golang.org/x/crypto/bcrypt"
 	"math/rand"
 	"reflect"
 	"strconv"
@@ -26,6 +27,14 @@ func IsEmpty(x interface{}) bool {
 }
 
 func StructToStruct(input interface{}, output interface{}) error {
+	if b, err := json.Marshal(input); err == nil {
+		return json.Unmarshal(b, &output)
+	} else {
+		return err
+	}
+}
+
+func MapToStruct(input map[string]interface{}, output interface{}) error {
 	if b, err := json.Marshal(input); err == nil {
 		return json.Unmarshal(b, &output)
 	} else {
@@ -102,4 +111,11 @@ func ContainsString(s []string, item string) bool {
 		}
 	}
 	return false
+}
+
+func GenerateHash(password *string) (*string, string) {
+
+	hashedPass, _ := bcrypt.GenerateFromPassword([]byte(*password), 8)
+	hashPassword := string(hashedPass)
+	return &hashPassword, *password
 }
