@@ -8,7 +8,7 @@ import (
 	_ "github.com/abufarhad/golang-starter-rest-api/docs"
 )
 
-// @title     Online Book Club API
+// @title     Go Starter API
 func main() {
 	cmd.Execute()
 }
